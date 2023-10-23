@@ -51,17 +51,17 @@ Other configuration can be decided by yourself, based on the instance being used
 ## Questions
 
  1. How long did you spend on this assessment in total?\
- _ Setting up IaC code with CdkTf using typescript
+ _ Setting up IaC code with CdkTf using typescript _
 
  2. What was the most difficult task?\
- _ tasks are straightforward, but less time
+ _ tasks are straightforward, but less time _
 
  3. If you had an unlimited amount of time to complete this task, what would you have done differently?\
  _ Many things, e.g. 
- a. IaC - setup networking with new private network, subnets, security groups
- b. IaC - More configurations on GKE and database clusters
- c. GHA - diff action for PR vs main - to allow preview env creation when PR is raised
- d. K8s - Helm charts, health checks
- e. CICD - tests - code format, volunerability SAST/DAST
- f. CICD - Notifications/approvals for visibility and control
+ a. IaC - setup networking with new private network, subnets, security groups\
+ b. IaC - More configurations on GKE and database clusters\
+ c. GHA - diff action for PR vs main - to allow preview env creation when PR is raised\
+ d. K8s - Helm charts, health checks\
+ e. CICD - tests - code format, volunerability SAST/DAST\
+ f. CICD - Notifications/approvals for visibility and control\
 ``
