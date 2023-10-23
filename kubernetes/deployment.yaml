@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: web-app
+    labels:
+        app: web-app
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: web-app
+    template:
+        metadata:
+            labels:
+                app: web-app
+        spec:
+            containers:
+                - name: web-app
+                  image: europe-north1-docker.pkg.dev/sisu-tech-poc/registry/web-app:latest
+                  ports:
+                      - containerPort: 3000

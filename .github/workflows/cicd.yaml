@@ -1,0 +1,78 @@
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  infra:
+    steps:
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+      with:
+        version: '>= 363.0.0'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: yarn install
+      working-directory: infrastructure
+
+    - name: Run Terraform CDK
+      uses: hashicorp/terraform-cdk-action@v0.1
+      working-directory: infrastructure
+      with:
+        cdktfVersion: 0.19.0
+        terraformVersion: 1.6
+        mode: auto-approve-apply
+        stackName: infra
+
+  ci:
+    steps:
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+      with:
+        version: '>= 363.0.0'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build image
+      working-directory: application
+      run: docker build . -t europe-north1-docker.pkg.dev/sisu-tech-poc/registry/web-app
+
+    - name: Push image
+      run: docker push europe-north1-docker.pkg.dev/sisu-tech-poc/registry/web-app
+
+  cd:
+    steps:
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+      with:
+        version: '>= 363.0.0'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Deploy k8s manifests
+      working-directory: kubernetes
+      run: kubectl apply -f .
